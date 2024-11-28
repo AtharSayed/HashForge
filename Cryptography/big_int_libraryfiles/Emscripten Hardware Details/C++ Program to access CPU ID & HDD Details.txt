@@ -1,0 +1,30 @@
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+    // Generate the result.txt file with HDD and CPU details
+    char command[1000];
+    strcpy(command, "lshw -class disk -class processor > result.txt");
+    system(command);
+    cout << "HDD and CPU details saved in result.txt file." << endl;
+
+    // Read and output the contents of the result.txt file
+    string line;
+    ifstream file("result.txt");
+    if (file.is_open()) {
+        while (getline(file, line)) {
+            cout << line << '\n';
+        }
+        file.close();
+    } else {
+        cout << "Unable to open file." << endl;
+    }
+    return 0;
+}

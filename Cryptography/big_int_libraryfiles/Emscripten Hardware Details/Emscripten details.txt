@@ -1,0 +1,10 @@
+
+Emscripten does not supports windows api the reason are as follows : 
+
+1) Web browsers are designed to prevent websites from accessing sensitive information on a user's system, such as hardware information like serial numbers. 
+   This is done to protect users from potential security risks. 
+
+Solution (Not reliable)
+1) There exists a possiblity to even access the hardware details of the users through emscripten 
+   by using third party libraries and api now for api we need to look into the the specifications and according to the specifications the api will vary for different laptops so i cannot 
+   give that API to another person to access his hardware specifications.The API will vary from machine to machine.

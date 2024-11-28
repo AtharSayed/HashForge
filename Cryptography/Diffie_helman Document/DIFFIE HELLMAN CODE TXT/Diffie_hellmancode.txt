@@ -1,0 +1,43 @@
+#include<iostream>
+#include<math.h>
+#include<cmath>
+#include<mpir.h>
+#include<bigint.h>
+
+using namespace std;
+using namespace iamtcs;
+
+void print(iamtcs::BigInt& num)
+{
+    char* str = NULL;
+    unsigned int len;
+    num.toStr(str, len, 10);
+    cout << "num: " << str << endl;
+}
+
+int main()
+{
+    BigInt x, y, a, b, n, g, key_1, key_2;
+    
+    // Initialize the prime numbers 'n' and 'g'
+    n = 353333333333; // Prime number n
+    g = 333333333333;   // Prime number g
+
+    // Generate random private keys for User 1 and User 2
+    x = 431;
+    y = 512;
+
+    g.powmod(x, n, &a); // Public key calculation for User 1
+    print(a);
+
+    g.powmod(y, n,&b); // Public key calculation for User 2
+    print(b);
+
+     b.powmod(x, n,&key_1); // Secret Key Calculation of User 1
+    print(key_1);
+
+    a.powmod(y, n,&key_2); // Secret Key Calculation of User 2
+    print(key_2);
+
+    return 0;
+}

@@ -1,0 +1,90 @@
+// Diffie Hellman Key Exchange Algorithm 
+#include<iostream>
+#include<math.h>
+#include<cmath>
+#include<mpir.h>
+#include<bigint.h>
+
+using namespace std;
+using namespace iamtcs;
+
+class DiffieHellman {
+
+public:
+
+    BigInt n, g;  // Prime numbers n and g 
+    BigInt x, y;   // Generate random private keys for User 1 and User 2
+
+    BigInt getPrivateKeyx()
+    {
+        // Generate a random private key x
+        BigInt x = 431;
+        return x;
+    }
+
+    BigInt getPrivateKeyy()
+    {
+        // Generate a random private key y 
+        BigInt y = 231; 
+        return y;
+    }
+
+    BigInt generatePublicKeyx(BigInt x, BigInt n, BigInt g)
+    {
+        // Calculate the public key using the private key, prime number n, and prime number g
+        BigInt a;
+        g.powmod(x, n, &a);
+        return a;
+    }
+
+    BigInt generatePublicKeyy(BigInt y, BigInt n, BigInt g)
+    {
+        BigInt b;
+        g.powmod(y, n, &b);
+        return b;
+    }
+
+    BigInt generateSecretKeyx(BigInt x, BigInt n, BigInt b)
+    {
+        // Calculate the secret key using the private key, prime number n, and public key of the other user
+        BigInt key_1;
+        b.powmod(x, n, &key_1);
+        return key_1;
+    }
+
+    BigInt generateSecretKeyy(BigInt y, BigInt n, BigInt a)
+    {
+        BigInt key_2;
+        a.powmod(y, n, &key_2);
+        return key_2;
+        
+
+    }
+
+
+};
+
+void print(BigInt& num)
+{
+    char* str = NULL;
+    unsigned int len;
+    num.toStr(str,len, 10);
+    cout << "num: " << str << endl;
+    delete[]str;
+}
+
+int main()
+{
+    BigInt x, y, a, b, key_1, key_2;
+    DiffieHellman dh;
+    BigInt n = 353333333333; // Prime number n
+    BigInt g = 333333333333; // Prime number g
+    
+    
+    x = dh.getPrivateKeyx(); // Private key calculation for User 1
+
+
+
+
+    return 0;   
+}

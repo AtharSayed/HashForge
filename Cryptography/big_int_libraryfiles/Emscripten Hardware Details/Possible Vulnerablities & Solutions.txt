@@ -1,0 +1,15 @@
+ Vulnerabilities :
+
+1) Unauthorized Access 
+2) Man in Middle Attack
+3) Memory Safety 
+4) Cross Side Scripting 
+5) Sensitive Data exposure
+
+Solutions :
+
+1) Encrpyting the file before sending wheter it is secure or unsecure network in both case  
+2) If the data is sensitive in this case the file data is sensitive then it is
+better to encrypted the data to prevent data exposure.
+3) It is important to have a proper secured network to avoid Man in the middle attack 
+4) To make sure we use strong encryption algorithm 

@@ -1,0 +1,49 @@
+
+1) Code to acces the hardware details :
+
+#include <iostream>
+#include <string>
+#include<fstream>
+
+int main() {
+    // Execute the systeminfo command and redirect output to a file
+    system("systeminfo > sysinf.txt");
+
+    // Open the output file
+    std::ifstream infile("sysinf.txt");
+
+    // Read and display the hardware details from the output file
+    std::string line;
+    while (std::getline(infile, line)) {
+        if (line.find("Processor(s):") != std::string::npos) {
+            std::cout << "Processor: " << line.substr(line.find(":") + 1) << std::endl;
+        }
+        else if (line.find("Total Physical Memory:") != std::string::npos) {
+            std::cout << "Total Physical Memory: " << line.substr(line.find(":") + 1) << std::endl;
+        }
+
+        else if (line.find("System Model:") != std::string::npos) {
+            std::cout << "System Model: " << line.substr(line.find(":") + 1) << std::endl;
+        }
+    }
+
+    // Close the output file
+    infile.close();
+
+    // Open the output file again to read its contents and display them in the console
+    std::ifstream infile2("sysinf.txt");
+    std::cout << "\nContent of sysinf.txt:" << std::endl;
+    std::string content((std::istreambuf_iterator<char>(infile2)), (std::istreambuf_iterator<char>()));
+    std::cout << content << std::endl;
+
+    // Close the output file again
+    infile2.close();
+
+    return 0;
+}
+
+2) To compile the code we need to compile this program use the emcc command and specify the appropriate flags to generate JavaScript code.
+
+emcc Device_fingerprint_emscripten.cpp -o Device_fingerprint_emscripten.js -s WASM=0 -s EXPORTED_FUNCTIONS="['_main']" --embed-file sysinf.txt
+
+This command compiles the C++ code in example.cpp to JavaScript and exports the main() function. It also embeds the file "example.txt" in the generated JavaScript code.

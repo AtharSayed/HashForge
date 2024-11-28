@@ -1,0 +1,65 @@
+#include<iostream>
+#include<math.h>
+#include<cmath>
+#include<mpir.h>
+#include<bigint.h>
+
+using namespace std;
+using namespace iamtcs;
+
+void print(iamtcs::BigInt& num)
+{
+    char* str = NULL;
+    unsigned int len;
+    num.toStr(str, len, 10);
+    cout << "num: " << str << endl;
+}
+
+iamtcs::BigInt getPrivateKey()
+{
+    // Generate a random private key
+    iamtcs::BigInt x = 431; // For example purposes, a fixed value is used
+    return x;
+}
+
+iamtcs::BigInt generatePublicKey(iamtcs::BigInt x, iamtcs::BigInt n, iamtcs::BigInt g)
+{
+    // Calculate the public key using the private key, prime number n, and prime number g
+    iamtcs::BigInt a;
+    g.powmod(x, n, &a);
+    return a;
+}
+
+iamtcs::BigInt generateSecretKey(iamtcs::BigInt x, iamtcs::BigInt n, iamtcs::BigInt b)
+{
+    // Calculate the secret key using the private key, prime number n, and public key of the other user
+    iamtcs::BigInt key;
+    b.powmod(x, n, &key);
+    return key;
+}
+
+int main()
+{
+    iamtcs::BigInt x, y, n, g, a, b, key_1, key_2;
+
+    // Initialize the prime numbers 'n' and 'g'
+    n = 353333333333; // Prime number n
+    g = 333333333333; // Prime number g
+    print(n);
+
+    x = getPrivateKey(); // Private key calculation for User 1
+    a = generatePublicKey(x, n, g); // Public key calculation for User 1
+    print(a);
+
+    y = getPrivateKey(); // Private key calculation for User 2
+    b = generatePublicKey(y, n, g); // Public key calculation for User 2
+    print(b);
+
+    key_1 = generateSecretKey(x, n, b); // Secret Key Calculation of User 1
+    print(key_1);
+
+    key_2 = generateSecretKey(y, n, a); // Secret Key Calculation of User 2
+    print(key_2);
+
+    return 0;
+}

@@ -1,0 +1,111 @@
+#include <iostream>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+// Calculate (a * b) % mod
+long long mulmod(long long a, long long b, long long mod) {
+    long long res = 0;
+    a = a % mod;
+    while (b > 0) {
+        if (b % 2 == 1) {
+            res = (res + a) % mod;
+        }
+        a = (a * 2) % mod;
+        b /= 2;
+    }
+    return res;
+}
+
+// Calculate (a^b) % mod
+long long power(long long a, long long b, long long mod) {
+    long long res = 1;
+    a = a % mod;
+    while (b > 0) {
+        if (b % 2 == 1) {
+            res = mulmod(res, a, mod);
+        }
+        a = mulmod(a, a, mod);
+        b /= 2;
+    }
+    return res;
+}
+
+// Miller-Rabin primality test
+bool is_prime(long long n, int k) {
+    // Base cases
+    if (n <= 1 || n == 4) {
+        return false;
+    }
+    if (n <= 3) {
+        return true;
+    }
+
+    // Find r and d such that n = 2^r * d + 1
+    long long d = n - 1;
+    int r = 0;
+    while (d % 2 == 0) {
+        d /= 2;
+        r++;
+    }
+
+    // Repeat k times
+    for (int i = 0; i < k; i++) {
+        // Generate a random witness in [2, n-2]
+        long long a = rand() % (n - 3) + 2;
+
+        // Compute a^d % n
+        long long x = power(a, d, n);
+
+        // If x is 1 or n-1, n is probably prime
+        if (x == 1 || x == n - 1) {
+            continue;
+        }
+
+        // Repeat r-1 times
+        bool prime = false;
+        for (int j = 0; j < r - 1; j++) {
+            x = mulmod(x, x, n);
+            if (x == n - 1) {
+                prime = true;
+                break;
+            }
+        }
+
+        // If n is not prime, return false
+        if (!prime) {
+            return false;
+        }
+    }
+
+    // If n passes all tests, return true
+    return true;
+}
+
+int main() {
+    // Seed random number generator
+    srand(time(NULL));
+
+    // Prompt user to enter two numbers
+    long long n1, n2;
+    cout << "Enter the value of p :";
+    cin >> n1 ;
+    cout<<"Enter the value of q : ";
+    cin >> n2;
+    // Check if n1 is prime
+    if (is_prime(n1, 10)) {
+        cout << n1 << " is prime" << endl;
+    } else {
+        cout << n1 << " is not prime" << endl;
+    }
+
+// Check if n2 is prime
+if (is_prime(n2, 10)) {
+cout << n2 << " is prime" << endl;
+} else {
+cout << n2 << " is not prime" << endl;
+}
+
+}

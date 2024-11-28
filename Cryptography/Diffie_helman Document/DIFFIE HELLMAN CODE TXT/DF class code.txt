@@ -1,0 +1,69 @@
+#include <iostream>
+#include <cmath>
+#include <mpir.h>
+#include <bigint.h>
+
+using namespace std;
+using namespace iamtcs;
+
+
+void print(iamtcs::BigInt& num)
+{
+    char* str = NULL;
+    unsigned int len;
+    num.toStr(str, len, 10);
+    cout << "num: " << str << endl;
+}
+
+
+class DiffieHellman {
+public:
+    DiffieHellman(BigInt n, BigInt g) : n_(n), g_(g) {}
+
+    iamtcs::BigInt getPrivateKey() {
+        // Generate a random private key
+        BigInt x = 431; // For example purposes, a fixed value is used
+        return x;
+    }
+
+    iamtcs::BigInt generatePublicKey(iamtcs::BigInt x) {
+        // Calculate the public key using the private key, prime number n, and prime number g
+        BigInt a;
+        g_.powmod(x, n_, &a);
+        return a;
+    }
+
+    iamtcs::BigInt generateSecretKey(iamtcs::BigInt x, iamtcs::BigInt b) {
+        // Calculate the secret key using the private key, prime number n, and public key of the other user
+        BigInt key;
+        b.powmod(x, n_, &key);
+        return key;
+    }
+
+private:
+    iamtcs::BigInt n_, g_;
+};
+
+int main() {
+    BigInt n = 353333333333; // Prime number n
+    BigInt g = 333333333333; // Prime number g
+
+    DiffieHellman dh(n, g);
+
+    BigInt x, y, a, b, key_1, key_2;
+
+    x = dh.getPrivateKey(); // Private key calculation for User 1
+    a = dh.generatePublicKey(x); // Public key calculation for User 1
+
+    y = dh.getPrivateKey(); // Private key calculation for User 2
+    b = dh.generatePublicKey(y); // Public key calculation for User 2
+
+    key_1 = dh.generateSecretKey(x, b); // Secret Key Calculation of User 1
+    key_2 = dh.generateSecretKey(y, a); // Secret Key Calculation of User 2
+
+   
+
+    
+    
+    return 0;
+}

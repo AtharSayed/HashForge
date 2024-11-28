@@ -1,0 +1,100 @@
+Diffie Helman Key Exchange Algorithm starts by first taking 2 large prime numbers. The larger the prime number the harder it gets to crack the Discrete Logarithmic problem  Smaller the prime number the easier it gets to break. Let’s say the first prime number is 11 and other one is 7 now.
+n = 11 , g = 7 
+Now Let us say that  Alice wants to communicate with Bob. Alice will have its own private key and Bob will have its own private key let’s say Alice private key is given by x and Bob private key is given by y then let us assume their values as 
+x =  3 ,  y = 5       (Private keys won’t be exchanged  So won’t be visible to anyone except the one who will have it)
+Now Alice and Bob will use the same formula to calculate A & B respectively on their side using their private key in the formula. 
+The formula is given as 
+A = g ^x mod n
+B = g ^y mod n
+After calculating A & B’s value on their respective sides Alice will send A to Bob and Bob will send B to Alice 
+A = 2 , B = 10 
+Now once A and B is exchanged with one another we will use another formula to finally calculate and decrypt the key which is given as 
+Key = B ^x mod n    , Key = 10
+Key = A^y mod n     , Key = 10
+
+Now from this we can conclude that both the side received the same key number as output after calculating the key using the formula .
+
+@startuml
+Alice -> Application: Generate a random secret key (a)
+Application -> Bob: Send g^a mod p
+Bob -> Application: Generate a random secret key (b)
+Application -> Alice: Send g^b mod p
+Alice -> Application: Calculate shared secret key (g^(ab) mod p)
+Application -> Bob: Calculate shared secret key (g^(ab) mod p)
+@enduml
+
+
+@startuml
+title Diffie-Hellman Key Exchange
+
+
+
+
+
+Alice -> Application : Public parameters n and g (prime numbers) 
+Application -> Bob : Public parameters n and g (prime numbers) 
+Bob -> Alice : Acknowledge receipt of p and g
+
+Alice -> Bob : Alice chooses a secret key x
+Bob -> Alice : Bob chooses a secret key y
+
+Alice -> Bob : Alice computes A = g^x mod n and sends to Bob
+Bob -> Alice : Bob computes B = g^y mod n and sends to Alice
+
+Alice -> Bob : Alice computes shared secret K = B^x mod n
+Bob -> Alice : Bob computes shared secret K = A^y mod n 
+
+@enduml
+
+
+
+                +---------------------+
+                |  DiffieHellmanKey   |
+                +---------------------+
+                | -privateKey: int    |
+                | -publicKey: int     |
+                |                     |
+                | +generatePrivateKey()|
+                | +generatePublicKey() |
+                | +generateSharedKey() |
+                +---------------------+
+@startuml
+title Diffie-Hellman Key Exchange
+
+
+
+
+Alice -> Application : Alice computes public Key and sends
+
+
+
+Application  -> Alice: Bob Gives the Acknowledgment reciept 
+
+
+Application -> Alice:  Bob computes Public key  and sends
+
+Alice   -> Application: Alice Gives the Acknowledgment reciept
+
+
+
+@enduml
+
+@startuml
+
+
+
+Application -> Bob : Alice computes public Key and sends
+
+Bob   -> Application: Bob Gives the Acknowledgment reciept 
+
+
+Bob -> Application : Bob computes Public key  and sends
+
+
+Application  -> Bob: Alice Gives the Acknowledgment reciept 
+
+
+@enduml
+
+
+

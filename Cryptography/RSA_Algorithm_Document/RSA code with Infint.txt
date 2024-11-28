@@ -1,0 +1,129 @@
+// RSA Algorithm implementation using InfInt Library 
+#include <iostream>
+#include <string>
+#include <vector>
+#include "InfInt.h"
+#include <algorithm>
+
+using namespace std;
+
+class RSA {
+private:
+    InfInt p, q, n, t, e, d;
+    vector<InfInt> encrypted, decrypted;
+
+public:
+    RSA() {}
+    RSA(InfInt p_, InfInt q_) : p(p_), q(q_) {
+        n = p * q;
+        t = (p - 1) * (q - 1);
+        generate_keys();
+    }
+
+    InfInt gcd(InfInt a, InfInt b) {
+        if (b == 0) {
+            return a;
+        }
+        return gcd(b, a % b);
+    }
+
+    void generate_keys() {
+        InfInt k = 1;
+        vector<InfInt> possible_e;
+        for (InfInt i = 2; i < t; i++) {
+            if (t % i == 0) continue;
+            if (gcd(i, t) == 1) possible_e.push_back(i);
+
+        }
+
+        e = possible_e[rand() % possible_e.size()];
+
+        while (1) {
+            k += t;
+            if (k % e == 0) {
+                d = k / e;
+                break;
+            }
+        }
+    }
+    InfInt pow_mod(InfInt base, InfInt exponent, InfInt modulus) {
+        InfInt result = 1;
+        while (exponent > 0) {
+            if (exponent % 2 == 1) {
+                result = (result * base) % modulus;
+            }
+            base = (base * base) % modulus;
+            exponent = exponent / 2;
+        }
+        return result;
+    }
+
+
+    void encrypt(string message) {
+        encrypted.clear();
+        for (size_t i = 0; i < message.length(); i++) {
+            InfInt c = message[i];
+            c = pow_mod(c, e, n);
+            encrypted.push_back(c);
+        }
+    }
+
+
+    void decrypt() {
+        decrypted.clear();
+        for (size_t i = 0; i < encrypted.size(); i++) {
+            InfInt c = encrypted[i];
+            c = pow_mod(c, d, n);
+            decrypted.push_back(c);
+        }
+    }
+
+    string get_encrypted_message() const {
+        string result;
+        for (size_t i = 0; i < encrypted.size(); i++) {
+            result += static_cast<char>(encrypted[i].toInt());
+        }
+        return result;
+    }
+
+    string get_decrypted_message() const {
+        string result;
+        for (size_t i = 0; i < decrypted.size(); i++) {
+            result += static_cast<char>(decrypted[i].toInt());
+        }
+        return result;
+    }
+
+
+    InfInt get_public_key() const {
+        return e;
+    }
+
+    InfInt get_private_key() const {
+        return d;
+    }
+};
+
+int main() {
+    InfInt p, q;
+    p = 23;  // Prime number 1 
+    q = 17;  // Prime number 2 
+
+
+    RSA rsa(p, q);
+
+    string message;
+    cout << "Enter message: ";  
+    cin >> message;
+
+    rsa.encrypt(message);
+    cout << "Encrypted message: " << rsa.get_encrypted_message() << endl;
+
+    rsa.decrypt();
+    cout << "Decrypted message: " << rsa.get_decrypted_message() << endl;
+
+    cout << "Public key: " << rsa.get_public_key() << endl;
+    cout << "Private key: " << rsa.get_private_key() << endl;
+
+    return 0;
+}

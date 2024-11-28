@@ -1,0 +1,90 @@
+First was to set up the enviromental variable to use emcc 
+  
+
+  source ./emsdk env.sh 
+  g++ hdd.cpp -o hdd 
+  sudo ./hdd
+  emcc --version
+  sudo netstat -ntlpn
+  sudo kill -9 14844
+  sudo netstat -ntlpn
+  emcc -o test.html hdd.cpp --preload-file result.txt
+  python3 -m http.server 
+
+
+
+cd emsdk
+ 1480  emcc -v
+ 1481  ./emsdk install latest
+ 1482  ./emsdk activate latest
+ 1483  source ./emsdk env.sh
+ 1484  cd emsdk
+ 1485  source ./emsdk env.sh
+ 1486  ls
+ 1487  pwd
+ 1488  cd emsdk
+ 1489  emcc -v
+ 1490  source ./emsdk_env.sh
+ 1491  emcc -v
+ 1492  emcc --version
+ 1493  source ./emsdk_env.sh
+ 1494  ls
+ 1495  history
+ 1496  sudo ./ssd
+ 1497  ./ssd
+ 1498  ./ssd.cpp
+ 1499  g++ -o ssd.cpp
+ 1500  ./ssd
+ 1501  emcc --version
+
+
+ emcc ssd.cpp -o test.html --emrun
+ 1264  emrun test.html
+
+em++ -o test.html ssd.cpp
+emcc program.c -o test.html -s USE_SDL=2 -s DISABLE_EXCEPTION_CATCHING=0 -s ASSERTIONS=2 -s EXIT_RUNTIME=1 -s "EXTRA_EXPORTED_RUNTIME_METHODS=['ccall']" -s "EXPORTED_FUNCTIONS=['_main']"
+
+sudo python3 -m http.server
+
+g++ -o hddinfo.cgi ssd.cpp
+
+g++ -o ssd.cpp
+ emcc hdd.cpp -o test.html --emrun
+
+emcc -s WASM=1 -s EXPORTED_FUNCTIONS="['_get_cpu_id']" hdd.cpp -o test.js
+
+
+
+// C++ program to access hdd details on the web browser
+
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+    char command[1000];
+    strcpy(command, "lshw -class disk > result.txt");
+    system(command);
+    cout << "HDD details saved in result.txt file." << endl;
+
+    string line;
+    ifstream file("result.txt");
+    if (file.is_open()) {
+        while (getline(file, line)) {
+            cout << line << '\n';
+        }
+        file.close();
+    } else {
+        cout << "Unable to open file." << endl;
+    }
+    return 0;
+}
+ 
+
+
